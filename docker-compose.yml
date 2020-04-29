@@ -1,0 +1,31 @@
+version: '3'
+services:
+    mysqldb:
+        image: mysql:5.7
+        volumes:
+            - mysql_storage:/var/lib/mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 12@pawaNji
+            MYSQL_USER: pawan
+            MYSQL_PASSWORD: dheeth
+            MYSQL_DATABASE: dbwordpress
+
+    mywordpress:
+        image: wordpress:5.1.1-php7.3-apache
+        restart: always
+        depends_on:
+            - mysqldb
+        ports:
+            - 4000:80
+        environment:
+            WORDPRESS_DB_HOST: mysqldb
+            WORDPRESS_DB_USER: pawan
+            WORDPRESS_DB_PASSWORD: dheeth
+            WORDPRESS_DB_NAME: dbwordpress
+        volumes:
+            - wp_storage:/var/www/html
+
+volumes:
+    wp_storage:
+    mysql_storage:
